@@ -145,11 +145,11 @@ public class SettingsActivity extends Activity {
                             SeekBar seekBar = (SeekBar) layout.findViewById(R.id.seekBar);
                             final TextView seekBarTextView = (TextView) layout.findViewById(R.id.seekBarTextView);
 
-                            int interval = mSharedPreferences.getInt("INTERVAL", 800);
+                            int interval = mSharedPreferences.getInt("INTERVAL", 1000);
                             currentInterval = (interval/100) - 6;
                             seekBar.setProgress(currentInterval);
 
-                            seekBarTextView.setText("Default: 800 Current: " + ((currentInterval*100) + 600));
+                            seekBarTextView.setText("Default: 1000 Current: " + ((currentInterval*100) + 600));
 
                             doneButton.setOnClickListener(new View.OnClickListener() {
                                 @Override

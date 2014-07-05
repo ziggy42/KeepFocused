@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
         setUpOnClickListener();
         disenable(false);
 
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 800)) { // 800
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 1000)) { // 800
 
             public void onTick(long millisUntilFinished) {
                 if (!correctAnswer) {
@@ -103,6 +103,12 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void restoreColors() {
+        firstImageView.setImageResource(R.drawable.basic);
+        secondImageView.setImageResource(R.drawable.basic);
+        thirdImageView.setImageResource(R.drawable.basic);
+    }
+
     private int setColorId(int i) {
         currentColor = i;
 
@@ -139,6 +145,7 @@ public class MainActivity extends Activity {
         timer.cancel();
         correctAnswer = false;
         disenable(false);
+        restoreColors();
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.game_lost);
         builder.setCancelable(false);
