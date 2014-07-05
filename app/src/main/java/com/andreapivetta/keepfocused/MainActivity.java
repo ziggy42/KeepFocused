@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.andreapivetta.keepfocused.settings.SettingsActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -29,6 +30,8 @@ public class MainActivity extends Activity {
     private int index, color, currentColor;
     private boolean correctAnswer = true;
     private SharedPreferences mSharedPreferences;
+
+    private static String interval = "INTERVAL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class MainActivity extends Activity {
         setUpOnClickListener();
         disenable(false);
 
-        timer = new CountDownTimer(3606000, 800) {
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 800)) { // 800
 
             public void onTick(long millisUntilFinished) {
                 if (!correctAnswer) {
@@ -65,13 +68,13 @@ public class MainActivity extends Activity {
         };
 
         AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().
+        /*AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
                 addTestDevice("F561EA0FF158FF7FC0B4E64B8FB39410").
                 addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
-                build();
-        //AdRequest adRequest = new AdRequest.Builder().build();
+                build();*/
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         startGame();
@@ -182,6 +185,7 @@ public class MainActivity extends Activity {
             public void onCountDownEnd(CountDownAnimation animation) {
                 scoreTextView.setText("0");
                 correctAnswer = true;
+                restoreTimer();
                 timer.start();
                 disenable(true);
             }
@@ -232,6 +236,26 @@ public class MainActivity extends Activity {
         thirdButton.setEnabled(enableAll);
     }
 
+
+    public void restoreTimer() {
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 800)) { // 800
+
+            public void onTick(long millisUntilFinished) {
+                if (!correctAnswer) {
+                    gameOver();
+                } else {
+                    setUpColors();
+                    correctAnswer = false;
+                    disenable(true);
+                }
+            }
+
+            public void onFinish() {
+                timer.start();
+            }
+        };
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -242,11 +266,13 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent i = new Intent(this, AboutActivity.class);
+            Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
         } else {
             if (id == R.id.action_restart) {
                 timer.cancel();
+                restoreTimer();
+
                 /*disenable(true);
                 correctAnswer = true;
                 scoreTextView.setText("0");

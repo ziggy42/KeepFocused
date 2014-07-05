@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_game"
+        android:key="pref_key_game_settings">
+
+        <Preference
+            android:key="pref_key_speed"
+            android:summary="@string/preference_speed"
+            android:title="@string/pref_title_speed" />
+
+        <Preference
+            android:key="pref_key_record"
+            android:title="@string/pref_title_record" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_general"
+        android:key="pref_key_storage_settings">
+
+        <PreferenceScreen
+            android:key="pref_key_rate_app"
+            android:summary="@string/pref_rate_for_support_summary"
+            android:title="@string/pref_rate_for_support" >
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="pref_key_share_app"
+            android:summary="@string/pref_share_for_support_summary"
+            android:title="@string/pref_share_for_support" >
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="pref_key_about_app"
+            android:summary="@string/pref_title_about_app_summary"
+            android:title="@string/pref_title_about_app" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.andreapivetta.keepfocused.settings.AboutActivity"
+                android:targetPackage="com.andreapivetta.keepfocused" />
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

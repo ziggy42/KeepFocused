@@ -1,4 +1,4 @@
-package com.andreapivetta.keepfocused;
+package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
