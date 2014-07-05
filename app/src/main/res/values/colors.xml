@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="list_background">#222222</color>
+    <color name="list_background_pressed">#e1e8ed</color>
+
+    <color name="amber">#FFBF00</color>
+    <color name="american_rose">#FF033E</color>
+    <color name="acqua">#00FFFF</color>
+    <color name="barbie_pink">#E0218A</color>
+    <color name="viola_scuro">#8800bb</color>
+    <color name="azure">#007FFF</color>
+    <color name="apple_green">#8DB600</color>
+    <color name="bright_green">#66FF00</color>
+
+    <!-- pantone -->
+    <color name="placid_blue">#83b5dd</color>
+    <color name="violet_tulipe">#9b90c8</color>
+    <color name="hemlock">#9eccb3</color>
+    <color name="freesia">#ffd600</color>
+    <color name="dazzling_blue">#006bb6</color>
+    <color name="celosia_orange">#f47d44</color>
+    <color name="comfray">#46866f</color>
+    <color name="purple_haze">#7f7ea8</color>
+    <color name="white">#ffff</color>
+    <color name="grey">#B2BEB5</color>
+
+</resources>
