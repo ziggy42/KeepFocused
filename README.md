@@ -2,7 +2,8 @@ Keep Focused
 =======
 
 This is super simple Android Game.
-[a link](https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused)
+<br />
+[Download](https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused)
 
 
 Game Play
@@ -13,5 +14,6 @@ Game Play
 
 Libraries
 --------------
-[a link](https://gist.github.com/Gautier/737759)
-[a link](https://github.com/IvanRF/CountDownAnimation)
+[CountDownTimer](https://gist.github.com/Gautier/737759)
+<br />
+[CountDownAnimation](https://github.com/IvanRF/CountDownAnimation)
