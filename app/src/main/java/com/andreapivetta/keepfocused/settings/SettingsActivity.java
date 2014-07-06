@@ -137,7 +137,7 @@ public class SettingsActivity extends Activity {
                             currentInterval = (interval / 100) - 6;
                             seekBar.setProgress(currentInterval);
 
-                            seekBarTextView.setText(getActivity().getString(R.string.default_current) + ((currentInterval * 100) + 600));
+                            seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval/10.0) + 0.6)) + "s");
 
                             doneButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -153,7 +153,7 @@ public class SettingsActivity extends Activity {
                                 @Override
                                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                                     currentInterval = i;
-                                    seekBarTextView.setText(getActivity().getString(R.string.default_current) + ((currentInterval * 100) + 600));
+                                    seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval/10.0) + 0.6)) + "s");
                                 }
 
                                 @Override

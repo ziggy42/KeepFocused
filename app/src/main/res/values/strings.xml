@@ -2,10 +2,10 @@
 <resources>
 
     <!-- General -->
-    <string name="app_name">Keep Focused</string>
+    <string name="app_name" translatable="false">Keep Focused</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_about">About</string>
+    <string name="title_activity_about" translatable="false">About</string>
 
     <!-- Dialogs -->
     <string name="restart">Try Again!</string>
@@ -17,36 +17,36 @@
     <string name="new_game">Restart</string>
     <string name="dismiss">Dismiss</string>
     <string name="record_congrats"> is your new Record! Nice game ;)</string>
-    <string name="set_speed_title">Set Interval</string>
+    <string name="set_speed_title">Interval between two colors</string>
     <string name="set_speed_message">Highest interval, easiest game</string>
     <string name="done">Done</string>
-    <string name="default_current">Default: 800 Current: </string>
+    <string name="default_current">Default: 1.0s Current: </string>
     <string name="share_app">Share this App!</string>
-    <string name="check_out_app">Check out this app!! https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
-    <string name="my_record_is">My record is </string>
-    <string name="can_you_beat_me">, can you beat me? https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
+    <string name="check_out_app" translatable="false">Check out this app!! https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
+    <string name="my_record_is" translatable="false">My record is </string>
+    <string name="can_you_beat_me" translatable="false">, can you beat me? https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
     <string name="record_share">Share your record!</string>
 
     <!-- About -->
     <string name="problems_and_suggestions">Contacts:</string>
-    <string name="andrea_twitter">https://twitter.com/Pivix00</string>
-    <string name="year_textview">" - 2014"</string>
-    <string name="image_content_description">app icon</string>
-    <string name="my_website">andreapivetta.altervista.org</string>
+    <string name="andrea_twitter" translatable="false">https://twitter.com/Pivix00</string>
+    <string name="year_textview" translatable="false">" - 2014"</string>
+    <string name="image_content_description" translatable="false">app icon</string>
+    <string name="my_website" translatable="false">andreapivetta.altervista.org</string>
     <string name="website_textView">Websites:</string>
     <string name="libraries_used">Libraries Used:</string>
-    <string name="count_down_timer">https://gist.github.com/Gautier/737759</string>
-    <string name="count_down_animation">https://github.com/IvanRF/CountDownAnimation</string>
+    <string name="count_down_timer" translatable="false">https://gist.github.com/Gautier/737759</string>
+    <string name="count_down_animation" translatable="false">https://github.com/IvanRF/CountDownAnimation</string>
 
     <!-- Preferences -->
     <string name="pref_general">General</string>
-    <string name="pref_title_about_app">About App</string>
+    <string name="pref_title_about_app" translatable="false">About App</string>
     <string name="pref_rate_for_support">Rate</string>
     <string name="pref_share_for_support">Share</string>
     <string name="pref_game">Game</string>
     <string name="pref_title_speed">Speed</string>
     <string name="preference_speed">How fast can you tap?</string>
-    <string name="pref_title_record">Record</string>
+    <string name="pref_title_record" translatable="false">Record</string>
     <string name="pref_share_for_support_summary">Help us to reach more users</string>
     <string name="pref_rate_for_support_summary">Do you like this app?</string>
     <string name="pref_title_about_app_summary">Who made this</string>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- ITALIAN -->
 
     <!-- General -->
@@ -17,10 +16,10 @@
     <string name="new_game">Ricomincia</string>
     <string name="dismiss">Chiudi</string>
     <string name="record_congrats"> è il tuo nuovo record! Bella partita;)</string>
-    <string name="set_speed_title">Seleziona intervallo</string>
+    <string name="set_speed_title">Intervallo tra due colori</string>
     <string name="set_speed_message">Maggiore è l\'intervallo, più facile è il gioco</string>
     <string name="done">Fatto</string>
-    <string name="default_current">Default: 800 Attuale: </string>
+    <string name="default_current">Default: 1,0s Attuale: </string>
     <string name="share_app">Condividi questa App!</string>
     <string name="record_share">Condividi il tuo record!</string>
 
@@ -40,5 +39,4 @@
     <string name="pref_rate_for_support_summary">Ti piace questa app?</string>
     <string name="pref_title_about_app_summary">Autori</string>
 
-    
 </resources>

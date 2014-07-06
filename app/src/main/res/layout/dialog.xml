@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="#878787"
         android:id="@+id/seekBarTextView" />
 
     <Button
