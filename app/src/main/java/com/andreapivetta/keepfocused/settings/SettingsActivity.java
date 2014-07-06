@@ -104,7 +104,7 @@ public class SettingsActivity extends Activity {
                         public boolean onPreferenceClick(Preference preference) {
                             Intent i = new Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse("market://details?id==com.andreapivetta.keepfocused"))
+                                    Uri.parse("market://details?id=com.andreapivetta.keepfocused"))
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
 
