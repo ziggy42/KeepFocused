@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,13 +69,13 @@ public class MainActivity extends Activity {
         };
 
         AdView adView = (AdView) findViewById(R.id.adView);
-        /*AdRequest adRequest = new AdRequest.Builder().
+        AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
                 addTestDevice("F561EA0FF158FF7FC0B4E64B8FB39410").
                 addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
-                build();*/
-        AdRequest adRequest = new AdRequest.Builder().build();
+                build();
+        //AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         startGame();
@@ -131,9 +132,6 @@ public class MainActivity extends Activity {
         builder.setMessage(R.string.welcome_text);
         builder.setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                /*scoreTextView.setText("0");
-                correctAnswer = true;
-                timer.start();*/
                 countDownAnimation();
             }
         });
@@ -160,10 +158,6 @@ public class MainActivity extends Activity {
 
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                /*scoreTextView.setText("0");
-                correctAnswer = true;
-                disenable(true);
-                timer.start();*/
                 scoreTextView.setText("");
                 countDownAnimation();
             }
@@ -179,7 +173,12 @@ public class MainActivity extends Activity {
             }
         });
         AlertDialog dialog = builder.create();
-        dialog.show();
+
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            Log.i("EXEPTIN", "Game Over while the app is in background");
+        }
     }
 
     public void countDownAnimation() {
@@ -279,12 +278,6 @@ public class MainActivity extends Activity {
             if (id == R.id.action_restart) {
                 timer.cancel();
                 restoreTimer();
-
-                /*disenable(true);
-                correctAnswer = true;
-                scoreTextView.setText("0");
-                timer.start();*/
-
                 scoreTextView.setText("");
                 countDownAnimation();
                 return true;
