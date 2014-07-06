@@ -1,16 +1,13 @@
 package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +18,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.andreapivetta.keepfocused.R;
-
-import org.w3c.dom.Text;
 
 public class SettingsActivity extends Activity {
 
@@ -57,17 +52,19 @@ public class SettingsActivity extends Activity {
         private SharedPreferences mSharedPreferences;
         private int record, currentInterval;
 
+        private static String msInterval = "INTERVAL";
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
 
-            mSharedPreferences = getActivity().getSharedPreferences("MyPref",0);
+            mSharedPreferences = getActivity().getSharedPreferences("MyPref", 0);
             prefKeyRateApp = findPreference("pref_key_rate_app");
             prefKeyShareApp = findPreference("pref_key_share_app");
             prefKeyRecord = findPreference("pref_key_record");
             prefKeySpeed = findPreference("pref_key_speed");
-            record = mSharedPreferences.getInt("Record",0);
+            record = mSharedPreferences.getInt("Record", 0);
             prefKeyRecord.setSummary(record + "");
 
             prefKeyRecord
@@ -79,10 +76,9 @@ public class SettingsActivity extends Activity {
                             sendIntent.setAction(Intent.ACTION_SEND)
                                     .putExtra(
                                             Intent.EXTRA_TEXT,
-                                            "My record is " + record + ", can you beat me? https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused")
+                                            getActivity().getString(R.string.my_record_is) + record + getActivity().getString(R.string.can_you_beat_me))
                                     .setType("text/plain");
-                            startActivity(Intent.createChooser(sendIntent,
-                                    "Share your record!"));
+                            startActivity(Intent.createChooser(sendIntent, getActivity().getString(R.string.record_share)));
 
                             return false;
                         }
@@ -112,10 +108,11 @@ public class SettingsActivity extends Activity {
                             sendIntent.setAction(Intent.ACTION_SEND)
                                     .putExtra(
                                             Intent.EXTRA_TEXT,
-                                            "Check out this app!! https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused")
+                                            getActivity().getString(R.string.check_out_app))
                                     .setType("text/plain");
                             startActivity(Intent.createChooser(sendIntent,
-                                    "Share this App!"));
+                                    getActivity().getString(R.string.share_app)
+                            ));
 
                             return false;
                         }
@@ -136,17 +133,17 @@ public class SettingsActivity extends Activity {
                             SeekBar seekBar = (SeekBar) layout.findViewById(R.id.seekBar);
                             final TextView seekBarTextView = (TextView) layout.findViewById(R.id.seekBarTextView);
 
-                            int interval = mSharedPreferences.getInt("INTERVAL", 1000);
-                            currentInterval = (interval/100) - 6;
+                            int interval = mSharedPreferences.getInt(msInterval, 1000);
+                            currentInterval = (interval / 100) - 6;
                             seekBar.setProgress(currentInterval);
 
-                            seekBarTextView.setText("Default: 1000 Current: " + ((currentInterval*100) + 600));
+                            seekBarTextView.setText(getActivity().getString(R.string.default_current) + ((currentInterval * 100) + 600));
 
                             doneButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     SharedPreferences.Editor e = mSharedPreferences.edit();
-                                    e.putInt("INTERVAL", (currentInterval*100) + 600);
+                                    e.putInt(msInterval, (currentInterval * 100) + 600);
                                     e.commit();
                                     dialog.cancel();
                                 }
@@ -156,7 +153,7 @@ public class SettingsActivity extends Activity {
                                 @Override
                                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                                     currentInterval = i;
-                                    seekBarTextView.setText("Default: 800 Current: " + ((currentInterval*100) + 600));
+                                    seekBarTextView.setText(getActivity().getString(R.string.default_current) + ((currentInterval * 100) + 600));
                                 }
 
                                 @Override

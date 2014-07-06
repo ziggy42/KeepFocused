@@ -36,8 +36,9 @@ public class MainActivity extends Activity {
     private int index, color, currentColor;
     private boolean correctAnswer = true;
     private SharedPreferences mSharedPreferences;
+    private static String msInterval = "INTERVAL";
 
-    private static String interval = "INTERVAL";
+    private boolean restartEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class MainActivity extends Activity {
         setUpOnClickListener();
         disenable(false);
 
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 1000)) { // 800
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 1000)) { // 800
 
             public void onTick(long millisUntilFinished) {
                 if (!correctAnswer) {
@@ -74,13 +75,13 @@ public class MainActivity extends Activity {
         };
 
         AdView adView = (AdView) findViewById(R.id.adView);
-        /*AdRequest adRequest = new AdRequest.Builder().
+        AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
                 addTestDevice("F561EA0FF158FF7FC0B4E64B8FB39410").
                 addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
-                build();*/
-        AdRequest adRequest = new AdRequest.Builder().build();
+                build();
+        //AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         startGame();
@@ -117,7 +118,7 @@ public class MainActivity extends Activity {
 
 
     private void animateColor(ImageView image) {
-        int duration = mSharedPreferences.getInt(interval, 1000)/2;
+        int duration = mSharedPreferences.getInt(msInterval, 1000)/2;
 
         Animation scale = new ScaleAnimation(1, 1.1f, 1, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         Animation scale2 = new ScaleAnimation(1.1f, 1, 1.1f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -180,7 +181,7 @@ public class MainActivity extends Activity {
             SharedPreferences.Editor e = mSharedPreferences.edit();
             e.putInt("Record", points);
             e.commit();
-            builder.setMessage("Woah!! " + points + " is your new Record! Nice game ;)");
+            builder.setMessage("Woah!! " + points + getString(R.string.record_congrats));
         }
 
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
@@ -204,7 +205,7 @@ public class MainActivity extends Activity {
         try {
             dialog.show();
         } catch (Exception e) {
-            Log.i("EXEPTIN", "Game Over while the app is in background");
+            Log.i("Exception", "Game Over while the app is in background");
         }
     }
 
@@ -221,6 +222,7 @@ public class MainActivity extends Activity {
                 restoreTimer();
                 timer.start();
                 disenable(true);
+                restartEnabled = true;
             }
         });
 
@@ -270,7 +272,7 @@ public class MainActivity extends Activity {
     }
 
     public void restoreTimer() {
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 800)) { // 800
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 800)) { // 800
 
             public void onTick(long millisUntilFinished) {
                 if (!correctAnswer) {
@@ -301,7 +303,9 @@ public class MainActivity extends Activity {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
         } else {
-            if (id == R.id.action_restart) {
+            if (id == R.id.action_restart && restartEnabled) {
+                restartEnabled = false;
+                restoreColors();
                 timer.cancel();
                 restoreTimer();
                 scoreTextView.setText("");
