@@ -187,6 +187,7 @@ public class MainActivity extends Activity {
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 scoreTextView.setText("");
+                restartEnabled = false;
                 countDownAnimation();
             }
         });
