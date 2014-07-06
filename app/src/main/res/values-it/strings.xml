@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ITALIAN -->
+
+    <!-- General -->
+    <string name="action_settings">Impostazioni</string>
+    <string name="title_activity_settings">Impostazioni</string>
+
+    <!-- Dialogs -->
+    <string name="restart">Prova Ancora!</string>
+    <string name="exit">Esci :(</string>
+    <string name="game_lost">Hai perso!</string>
+    <string name="welcome_title">Benvenuto!</string>
+    <string name="welcome_text">È bello vederti qui! Gioca! :)</string>
+    <string name="start">Inizia!</string>
+    <string name="new_game">Ricomincia</string>
+    <string name="dismiss">Chiudi</string>
+    <string name="record_congrats"> è il tuo nuovo record! Bella partita;)</string>
+    <string name="set_speed_title">Seleziona intervallo</string>
+    <string name="set_speed_message">Maggiore è l\'intervallo, più facile è il gioco</string>
+    <string name="done">Fatto</string>
+    <string name="default_current">Default: 800 Attuale: </string>
+    <string name="share_app">Condividi questa App!</string>
+    <string name="record_share">Condividi il tuo record!</string>
+
+    <!-- About -->
+    <string name="problems_and_suggestions">Contatti</string>
+    <string name="website_textView">Blog:</string>
+    <string name="libraries_used">Librerie Usate:</string>
+
+    <!-- Preferences -->
+    <string name="pref_general">Generale</string>
+    <string name="pref_rate_for_support">Valuta</string>
+    <string name="pref_share_for_support">Condividi</string>
+    <string name="pref_game">Gioco</string>
+    <string name="pref_title_speed">Velocità</string>
+    <string name="preference_speed">Quanto sei veloce?</string>
+    <string name="pref_share_for_support_summary">Aiutaci a crescere</string>
+    <string name="pref_rate_for_support_summary">Ti piace questa app?</string>
+    <string name="pref_title_about_app_summary">Autori</string>
+
+    
+</resources>
