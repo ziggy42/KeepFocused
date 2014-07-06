@@ -10,6 +10,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -69,13 +74,13 @@ public class MainActivity extends Activity {
         };
 
         AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().
+        /*AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
                 addTestDevice("F561EA0FF158FF7FC0B4E64B8FB39410").
                 addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
-                build();
-        //AdRequest adRequest = new AdRequest.Builder().build();
+                build();*/
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         startGame();
@@ -90,18 +95,40 @@ public class MainActivity extends Activity {
                 firstImageView.setImageResource(color);
                 secondImageView.setImageResource(R.drawable.basic);
                 thirdImageView.setImageResource(R.drawable.basic);
+
+                animateColor(firstImageView);
                 break;
             case 1:
                 secondImageView.setImageResource(color);
                 firstImageView.setImageResource(R.drawable.basic);
                 thirdImageView.setImageResource(R.drawable.basic);
+
+                animateColor(secondImageView);
                 break;
             case 2:
                 thirdImageView.setImageResource(color);
                 secondImageView.setImageResource(R.drawable.basic);
                 firstImageView.setImageResource(R.drawable.basic);
+
+                animateColor(thirdImageView);
                 break;
         }
+    }
+
+
+    private void animateColor(ImageView image) {
+        int duration = mSharedPreferences.getInt(interval, 1000)/2;
+
+        Animation scale = new ScaleAnimation(1, 1.1f, 1, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        Animation scale2 = new ScaleAnimation(1.1f, 1, 1.1f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scale.setDuration(duration);
+        scale2.setDuration(duration);
+        scale2.setStartOffset(scale.getDuration());
+        AnimationSet animSet = new AnimationSet(true);
+        animSet.setFillEnabled(true);
+        animSet.addAnimation(scale);
+        animSet.addAnimation(scale2);
+        image.startAnimation(animSet);
     }
 
     private void restoreColors() {
@@ -241,7 +268,6 @@ public class MainActivity extends Activity {
         secondButton.setEnabled(enableAll);
         thirdButton.setEnabled(enableAll);
     }
-
 
     public void restoreTimer() {
         timer = new CountDownTimer(3606000, mSharedPreferences.getInt(interval, 800)) { // 800
