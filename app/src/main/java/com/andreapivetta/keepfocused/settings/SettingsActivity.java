@@ -1,7 +1,9 @@
 package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -48,7 +50,7 @@ public class SettingsActivity extends Activity {
     }
 
     public static class SettingsFragment extends PreferenceFragment {
-        private Preference prefKeyRateApp, prefKeyShareApp, prefKeyRecord, prefKeySpeed;
+        private Preference prefKeyRateApp, prefKeyShareApp, prefKeyRecord, prefKeySpeed, prefKeyRestore;
         private SharedPreferences mSharedPreferences;
         private int record, currentInterval;
 
@@ -64,6 +66,7 @@ public class SettingsActivity extends Activity {
             prefKeyShareApp = findPreference("pref_key_share_app");
             prefKeyRecord = findPreference("pref_key_record");
             prefKeySpeed = findPreference("pref_key_speed");
+            prefKeyRestore = findPreference("pref_key_restore");
             record = mSharedPreferences.getInt("Record", 0);
             prefKeyRecord.setSummary(record + "");
 
@@ -172,6 +175,34 @@ public class SettingsActivity extends Activity {
                             return false;
                         }
                     });
+
+            prefKeyRestore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setTitle(R.string.are_you_sure);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            SharedPreferences.Editor e = mSharedPreferences.edit();
+                            e.putInt("Record", 0);
+                            e.commit();
+                            prefKeyRecord.setSummary("0");
+                        }
+                    });
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
+                    return false;
+                }
+            });
         }
     }
 

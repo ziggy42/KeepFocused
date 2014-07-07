@@ -181,7 +181,7 @@ public class MainActivity extends Activity {
             SharedPreferences.Editor e = mSharedPreferences.edit();
             e.putInt("Record", points);
             e.commit();
-            builder.setMessage("Woah!! " + points + getString(R.string.record_congrats));
+            builder.setMessage("Woah!! " + points + " "+ getString(R.string.record_congrats));
         }
 
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
