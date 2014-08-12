@@ -5,23 +5,25 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.andreapivetta.keepfocused.settings.SettingsActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.Random;
 
@@ -36,9 +38,10 @@ public class MainActivity extends Activity {
     private int index, color, currentColor;
     private boolean correctAnswer = true;
     private SharedPreferences mSharedPreferences;
+    private SharedPreferences prefs;
     private static String msInterval = "INTERVAL";
-
     private boolean restartEnabled = false;
+    private MediaPlayer mp, mpGO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = getSharedPreferences("MyPref", 0);
+        prefs =   PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         firstButton = (ImageButton) findViewById(R.id.firstButton);
         secondButton = (ImageButton) findViewById(R.id.secondButton);
         thirdButton = (ImageButton) findViewById(R.id.thirdButton);
@@ -57,7 +61,7 @@ public class MainActivity extends Activity {
         setUpOnClickListener();
         disenable(false);
 
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 1000)) { // 800
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 1000)) {
 
             public void onTick(long millisUntilFinished) {
                 if (!correctAnswer) {
@@ -77,12 +81,21 @@ public class MainActivity extends Activity {
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
-                addTestDevice("F561EA0FF158FF7FC0B4E64B8FB39410").
+                addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
                 addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
                 build();
         //AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+        mp = MediaPlayer.create(this, R.raw.sound);
+        mpGO = MediaPlayer.create(this, R.raw.gameover);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.bg_color));
+        }
 
         startGame();
     }
@@ -115,7 +128,6 @@ public class MainActivity extends Activity {
                 break;
         }
     }
-
 
     private void animateColor(ImageView image) {
         int duration = mSharedPreferences.getInt(msInterval, 1000)/2;
@@ -168,6 +180,7 @@ public class MainActivity extends Activity {
     }
 
     private void gameOver() {
+        mpGO.start();
         timer.cancel();
         correctAnswer = false;
         disenable(false);
@@ -258,6 +271,9 @@ public class MainActivity extends Activity {
 
     public void click(int i) {
         if (currentColor == i) {
+            if(prefs.getBoolean("SOUND",true))
+                mp.start();
+
             scoreTextView.setText((Integer.parseInt(scoreTextView.getText().toString()) + 1) + "");
             correctAnswer = true;
             disenable(false);

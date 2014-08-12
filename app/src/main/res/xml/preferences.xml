@@ -20,6 +20,12 @@
             android:summary="@string/pref_title_restore_summary"
             android:title="@string/pref_title_restore" />
 
+        <CheckBoxPreference
+            android:key="SOUND"
+            android:title="@string/title_sound_preference"
+            android:summary="@string/summary_sound_preference"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

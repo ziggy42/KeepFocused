@@ -1,10 +1,12 @@
 package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.andreapivetta.keepfocused.R;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class AboutActivity extends Activity {
 
@@ -12,6 +14,12 @@ public class AboutActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.bg_color));
+        }
     }
 
 

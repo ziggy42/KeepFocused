@@ -25,4 +25,7 @@
     <color name="white">#ffff</color>
     <color name="grey">#B2BEB5</color>
 
+
+    <color name="bg_color">#28589C</color>
+
 </resources>
