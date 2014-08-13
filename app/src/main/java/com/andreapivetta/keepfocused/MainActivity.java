@@ -12,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -20,6 +19,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.andreapivetta.keepfocused.settings.SettingsActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
     private TextView scoreTextView;
     private Random random;
     private CountDownTimer timer;
-    private int index, color, currentColor;
+    private int currentColor;
     private boolean correctAnswer = true;
     private SharedPreferences mSharedPreferences;
     private SharedPreferences prefs;
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         mSharedPreferences = getSharedPreferences("MyPref", 0);
-        prefs =   PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         firstButton = (ImageButton) findViewById(R.id.firstButton);
         secondButton = (ImageButton) findViewById(R.id.secondButton);
         thirdButton = (ImageButton) findViewById(R.id.thirdButton);
@@ -101,8 +101,8 @@ public class MainActivity extends Activity {
     }
 
     private void setUpColors() {
-        index = random.nextInt(3);
-        color = setColorId(random.nextInt(3));
+        int index = random.nextInt(3);
+        int color = setColorId(random.nextInt(3));
 
         switch (index) {
             case 0:
@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
     }
 
     private void animateColor(ImageView image) {
-        int duration = mSharedPreferences.getInt(msInterval, 1000)/2;
+        int duration = mSharedPreferences.getInt(msInterval, 1000) / 2;
 
         Animation scale = new ScaleAnimation(1, 1.1f, 1, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         Animation scale2 = new ScaleAnimation(1.1f, 1, 1.1f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -193,8 +193,8 @@ public class MainActivity extends Activity {
         if (points > mSharedPreferences.getInt("Record", 0)) {
             SharedPreferences.Editor e = mSharedPreferences.edit();
             e.putInt("Record", points);
-            e.commit();
-            builder.setMessage("Woah!! " + points + " "+ getString(R.string.record_congrats));
+            e.apply();
+            builder.setMessage("Woah!! " + points + " " + getString(R.string.record_congrats));
         }
 
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
@@ -271,7 +271,7 @@ public class MainActivity extends Activity {
 
     public void click(int i) {
         if (currentColor == i) {
-            if(prefs.getBoolean("SOUND",true))
+            if (prefs.getBoolean("SOUND", true))
                 mp.start();
 
             scoreTextView.setText((Integer.parseInt(scoreTextView.getText().toString()) + 1) + "");

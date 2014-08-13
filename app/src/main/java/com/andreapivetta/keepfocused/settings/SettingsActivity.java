@@ -50,10 +50,7 @@ public class SettingsActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -148,14 +145,14 @@ public class SettingsActivity extends Activity {
                             currentInterval = (interval / 100) - 6;
                             seekBar.setProgress(currentInterval);
 
-                            seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval/10.0) + 0.6)) + "s");
+                            seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval / 10.0) + 0.6)) + "s");
 
                             doneButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     SharedPreferences.Editor e = mSharedPreferences.edit();
                                     e.putInt(msInterval, (currentInterval * 100) + 600);
-                                    e.commit();
+                                    e.apply();
                                     dialog.cancel();
                                 }
                             });
@@ -164,7 +161,7 @@ public class SettingsActivity extends Activity {
                                 @Override
                                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                                     currentInterval = i;
-                                    seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval/10.0) + 0.6)) + "s");
+                                    seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval / 10.0) + 0.6)) + "s");
                                 }
 
                                 @Override
@@ -194,7 +191,7 @@ public class SettingsActivity extends Activity {
                         public void onClick(DialogInterface dialog, int id) {
                             SharedPreferences.Editor e = mSharedPreferences.edit();
                             e.putInt("Record", 0);
-                            e.commit();
+                            e.apply();
                             prefKeyRecord.setSummary("0");
                         }
                     });

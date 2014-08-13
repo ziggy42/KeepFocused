@@ -17,7 +17,6 @@
     <string name="dismiss">Chiudi</string>
     <string name="record_congrats"> è il tuo nuovo record! Bella partita ;)</string>
     <string name="set_speed_title">Intervallo tra due colori</string>
-    <string name="set_speed_message">Maggiore è l\'intervallo, più facile è il gioco</string>
     <string name="done">Fatto</string>
     <string name="default_current">Default: 1,0s Attuale: </string>
     <string name="share_app">Condividi questa App!</string>
@@ -42,5 +41,7 @@
     <string name="pref_title_about_app_summary">Autori</string>
     <string name="pref_title_restore">Ripristina Record</string>
     <string name="pref_title_restore_summary">Il record attuale sarà eliminato</string>
+    <string name="title_sound_preference">Suono</string>
+    <string name="summary_sound_preference">Abilita suono</string>
 
 </resources>
