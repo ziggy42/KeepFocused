@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
     private MediaPlayer mp, mpGO;
 
     private InterstitialAd interstitial;
+    private boolean running = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,11 @@ public class MainActivity extends Activity {
         }
         findViewById(R.id.rootRelLayout).setBackgroundColor(getResources().getColor(mSharedPreferences.getInt("BG", R.color.green_sea)));
 
-        startGame();
+        if(!running) {
+            scoreTextView.setTextSize(40);
+            scoreTextView.setText(getResources().getString(R.string.start_message));
+            disenable(true);
+        }
     }
 
     private void setUpColors() {
@@ -181,31 +186,27 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void startGame() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setCancelable(false);
-        builder.setTitle(R.string.welcome_title);
-        builder.setMessage(R.string.welcome_text);
-        builder.setPositiveButton(R.string.start, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                countDownAnimation();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
     private void gameOver() {
-        int points = Integer.parseInt(scoreTextView.getText().toString());
+        int points;
+        try {
+            points = Integer.parseInt(scoreTextView.getText().toString());
+        } catch (NumberFormatException e) {
+            points = 0;
+        }
+
         if(points >= 5)
             displayInterstitial();
+
+        running = false;
+        scoreTextView.setTextSize(40);
+        scoreTextView.setText(getResources().getString(R.string.start_message));
+        disenable(true);
 
         if (prefs.getBoolean("SOUND", true))
             mpGO.start();
 
         timer.cancel();
         correctAnswer = false;
-        disenable(false);
         restoreColors();
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.game_lost);
@@ -222,26 +223,19 @@ public class MainActivity extends Activity {
             public void onClick(DialogInterface dialog, int id) {
                 scoreTextView.setText("");
                 restartEnabled = false;
+                disenable(false);
                 countDownAnimation();
             }
         });
-        builder.setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                System.exit(0);
-            }
-        });
-        builder.setNeutralButton(R.string.dismiss, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
             }
         });
         AlertDialog dialog = builder.create();
 
-        try {
-            dialog.show();
-        } catch (Exception e) {
-            Log.i("Exception", "Game Over while the app is in background");
-        }
+        try { dialog.show();
+        } catch (Exception e) { Log.i("Exception", "Game Over while the app is in background");}
     }
 
     public void countDownAnimation() {
@@ -253,11 +247,13 @@ public class MainActivity extends Activity {
             @Override
             public void onCountDownEnd(CountDownAnimation animation) {
                 scoreTextView.setText("0");
+                scoreTextView.setTextSize(120);
                 correctAnswer = true;
                 restoreTimer();
                 timer.start();
                 disenable(true);
                 restartEnabled = true;
+                running = true;
             }
         });
 
@@ -291,15 +287,23 @@ public class MainActivity extends Activity {
     }
 
     public void click(int i) {
-        if (currentColor == i) {
-            if (prefs.getBoolean("SOUND", true))
-                mp.start();
-
-            scoreTextView.setText((Integer.parseInt(scoreTextView.getText().toString()) + 1) + "");
-            correctAnswer = true;
+        if (!running) {
+            countDownAnimation();
+            running = !running;
+            scoreTextView.setText("");
             disenable(false);
-        } else {
-            gameOver();
+        }
+        else {
+            if (currentColor == i) {
+                if (prefs.getBoolean("SOUND", true))
+                    mp.start();
+
+                scoreTextView.setText((Integer.parseInt(scoreTextView.getText().toString()) + 1) + "");
+                correctAnswer = true;
+                disenable(false);
+            } else {
+                gameOver();
+            }
         }
     }
 
@@ -340,16 +344,6 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
-        } else {
-            if (id == R.id.action_restart && restartEnabled) {
-                restartEnabled = false;
-                restoreColors();
-                timer.cancel();
-                restoreTimer();
-                scoreTextView.setText("");
-                countDownAnimation();
-                return true;
-            }
         }
         return super.onOptionsItemSelected(item);
     }
