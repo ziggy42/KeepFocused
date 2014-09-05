@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.andreapivetta.keepfocused.settings.SettingsActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.Random;
@@ -42,6 +44,8 @@ public class MainActivity extends Activity {
     private static String msInterval = "INTERVAL";
     private boolean restartEnabled = false;
     private MediaPlayer mp, mpGO;
+
+    private InterstitialAd interstitial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class MainActivity extends Activity {
             }
         };
 
-        AdView adView = (AdView) findViewById(R.id.adView);
+        /*AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().
                 addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
                 addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
@@ -86,16 +90,28 @@ public class MainActivity extends Activity {
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
                 build();
         //AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        adView.loadAd(adRequest);*/
+
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId("ca-app-pub-8642726692616831/5265085502");
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
+                addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
+                addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
+                addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
+                build();
+        interstitial.loadAd(adRequest);
 
         mp = MediaPlayer.create(this, R.raw.sound);
         mpGO = MediaPlayer.create(this, R.raw.gameover);
 
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise))));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintColor(getResources().getColor(R.color.bg_color));
+            tintManager.setStatusBarTintColor(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise)));
         }
+        findViewById(R.id.rootRelLayout).setBackgroundColor(getResources().getColor(mSharedPreferences.getInt("BG", R.color.green_sea)));
 
         startGame();
     }
@@ -180,7 +196,13 @@ public class MainActivity extends Activity {
     }
 
     private void gameOver() {
-        mpGO.start();
+        int points = Integer.parseInt(scoreTextView.getText().toString());
+        if(points >= 5)
+            displayInterstitial();
+
+        if (prefs.getBoolean("SOUND", true))
+            mpGO.start();
+
         timer.cancel();
         correctAnswer = false;
         disenable(false);
@@ -189,7 +211,6 @@ public class MainActivity extends Activity {
         builder.setTitle(R.string.game_lost);
         builder.setCancelable(false);
 
-        int points = Integer.parseInt(scoreTextView.getText().toString());
         if (points > mSharedPreferences.getInt("Record", 0)) {
             SharedPreferences.Editor e = mSharedPreferences.edit();
             e.putInt("Record", points);
@@ -331,5 +352,33 @@ public class MainActivity extends Activity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise))));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setStatusBarTintColor(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise)));
+        }
+        findViewById(R.id.rootRelLayout).setBackgroundColor(getResources().getColor(mSharedPreferences.getInt("BG", R.color.green_sea)));
+
+        invalidateOptionsMenu();
+    }
+
+    public void displayInterstitial() {
+        if (interstitial.isLoaded())
+            interstitial.show();
+
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
+                addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
+                addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
+                addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
+                build();
+        interstitial.loadAd(adRequest);
     }
 }

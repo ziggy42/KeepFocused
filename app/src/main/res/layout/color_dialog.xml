@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:id="@+id/dialogColorLinearLayout">
+
+    <View
+        android:id="@+id/turquoise_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/turquoise" />
+
+    <View
+        android:id="@+id/emerald_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/emerald" />
+
+    <View
+        android:id="@+id/peterRiver_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/peter_river" />
+
+    <View
+        android:id="@+id/amethyst_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/amethyst" />
+
+    <View
+        android:id="@+id/sunFlower_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/sun_flower" />
+
+    <View
+        android:id="@+id/carrot_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/carrot" />
+
+    <View
+        android:id="@+id/alizarin_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/alizarin" />
+    <View
+        android:id="@+id/clouds_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        android:background="@color/clouds" />
+
+</LinearLayout>

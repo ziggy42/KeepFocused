@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     android:fitsSystemWindows="true"
+    android:id="@+id/rootRelLayout"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -65,27 +66,22 @@
             android:id="@+id/scoreTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="100sp"
+            android:textSize="120sp"
             android:textColor="@color/white"
             android:layout_centerInParent="true" />
-
     </RelativeLayout>
-
-
-
 
     <LinearLayout
         android:background="@drawable/search_bg_shadow"
         android:layout_width="fill_parent"
-        android:layout_height="190dp"
+        android:layout_height="180dp"
         android:gravity="center_vertical"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="1dp"
-        android:layout_above="@+id/adView"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
         android:id="@+id/linearLayout2">
-
 
         <ImageButton
             android:id="@+id/firstButton"
@@ -120,14 +116,6 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-8642726692616831/3182274300" />
 
     <TextView
         android:id="@+id/countDownTextView"

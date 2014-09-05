@@ -6,11 +6,14 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,11 +37,8 @@ public class SettingsActivity extends Activity {
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintColor(getResources().getColor(R.color.bg_color));
-        }
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(getSharedPreferences("MyPref", 0).getInt("BGAct", R.color.turquoise))));
+        invalidateOptionsMenu();
     }
 
 
@@ -55,7 +55,8 @@ public class SettingsActivity extends Activity {
     }
 
     public static class SettingsFragment extends PreferenceFragment {
-        private Preference prefKeyRateApp, prefKeyShareApp, prefKeyRecord, prefKeySpeed, prefKeyRestore;
+        private Preference prefKeyRateApp, prefKeyShareApp, prefKeyRecord,
+                prefKeySpeed, prefKeyRestore, prefKeyTheme;
         private SharedPreferences mSharedPreferences;
         private int record, currentInterval;
 
@@ -72,6 +73,7 @@ public class SettingsActivity extends Activity {
             prefKeyRecord = findPreference("pref_key_record");
             prefKeySpeed = findPreference("pref_key_speed");
             prefKeyRestore = findPreference("pref_key_restore");
+            prefKeyTheme = findPreference("pref_key_theme");
             record = mSharedPreferences.getInt("Record", 0);
             prefKeyRecord.setSummary(record + "");
 
@@ -150,9 +152,10 @@ public class SettingsActivity extends Activity {
                             doneButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    SharedPreferences.Editor e = mSharedPreferences.edit();
-                                    e.putInt(msInterval, (currentInterval * 100) + 600);
-                                    e.apply();
+                                    mSharedPreferences.
+                                            edit().
+                                            putInt(msInterval, (currentInterval * 100) + 600)
+                                            .apply();
                                     dialog.cancel();
                                 }
                             });
@@ -189,9 +192,10 @@ public class SettingsActivity extends Activity {
                     builder.setTitle(R.string.are_you_sure);
                     builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            SharedPreferences.Editor e = mSharedPreferences.edit();
-                            e.putInt("Record", 0);
-                            e.apply();
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("Record", 0)
+                                    .apply();
                             prefKeyRecord.setSummary("0");
                         }
                     });
@@ -204,11 +208,155 @@ public class SettingsActivity extends Activity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
+                    return false;
+                }
+            });
+
+            prefKeyTheme.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    final Dialog dialog = new Dialog(getActivity());
+                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View layout = inflater.inflate(R.layout.color_dialog, (ViewGroup) getActivity().findViewById(R.id.dialogColorLinearLayout));
+                    dialog.setContentView(layout);
+
+                    dialog.setTitle(R.string.chose_theme);
+
+                    View turquoise_button = layout.findViewById(R.id.turquoise_button);
+                    View emerald_button = layout.findViewById(R.id.emerald_button);
+                    View peterRiver_button = layout.findViewById(R.id.peterRiver_button);
+                    View amethyst_button = layout.findViewById(R.id.amethyst_button);
+                    View sunFlower_button = layout.findViewById(R.id.sunFlower_button);
+                    View carrot_button = layout.findViewById(R.id.carrot_button);
+                    View alizarin_button = layout.findViewById(R.id.alizarin_button);
+                    View clouds_button = layout.findViewById(R.id.clouds_button);
+
+                    turquoise_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.turquoise)
+                                    .putInt("BGAct", R.color.green_sea)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    emerald_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.emerald)
+                                    .putInt("BGAct", R.color.nephritis)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    peterRiver_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.peter_river)
+                                    .putInt("BGAct", R.color.belize_hole)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    amethyst_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.amethyst)
+                                    .putInt("BGAct", R.color.wisteria)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+
+                    sunFlower_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.sun_flower)
+                                    .putInt("BGAct", R.color.orange)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    carrot_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.carrot)
+                                    .putInt("BGAct", R.color.pumpkin)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    alizarin_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.alizarin)
+                                    .putInt("BGAct", R.color.pomegranate)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    clouds_button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mSharedPreferences
+                                    .edit()
+                                    .putInt("BG", R.color.clouds)
+                                    .putInt("BGAct", R.color.silver)
+                                    .apply();
+                            dialog.cancel();
+                            updateColor();
+                        }
+                    });
+
+                    dialog.show();
 
                     return false;
                 }
             });
         }
+
+        void updateColor() {
+            getActivity().
+                    getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise))));
+            getActivity().invalidateOptionsMenu();
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(getSharedPreferences("MyPref", 0).getInt("BGAct", R.color.turquoise))));
+        invalidateOptionsMenu();
     }
 
 }

@@ -56,5 +56,8 @@
     <string name="pref_title_restore_summary">Current record will be lost</string>
     <string name="title_sound_preference">Sound</string>
     <string name="summary_sound_preference">Enable sound while tapping</string>
+    <string name="pref_theme_title">Theme</string>
+    <string name="preference_theme">Customize colors</string>
+    <string name="chose_theme">Chose a Color!</string>
 
 </resources>

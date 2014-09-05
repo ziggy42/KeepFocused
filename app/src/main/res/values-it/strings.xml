@@ -43,5 +43,8 @@
     <string name="pref_title_restore_summary">Il record attuale sarà eliminato</string>
     <string name="title_sound_preference">Suono</string>
     <string name="summary_sound_preference">Abilita suono</string>
+    <string name="pref_theme_title">Tema</string>
+    <string name="preference_theme">Personalizza i colori</string>
+    <string name="chose_theme">Scegli un colore!</string>
 
 </resources>
