@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.andreapivetta.keepfocused.settings.SettingsActivity;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -38,15 +37,11 @@ public class MainActivity extends Activity {
     private Random random;
     private CountDownTimer timer;
     private int currentColor;
-    private boolean correctAnswer = true;
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences prefs;
+    private boolean correctAnswer = true, running = false;
+    private SharedPreferences mSharedPreferences, prefs;
     private static String msInterval = "INTERVAL";
-    private boolean restartEnabled = false;
     private MediaPlayer mp, mpGO;
-
     private InterstitialAd interstitial;
-    private boolean running = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,35 +58,12 @@ public class MainActivity extends Activity {
         thirdImageView = (ImageView) findViewById(R.id.thirdImageView);
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
         random = new Random();
+        mp = MediaPlayer.create(this, R.raw.sound);
+        mpGO = MediaPlayer.create(this, R.raw.gameover);
+
         setUpOnClickListener();
         disenable(false);
-
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 1000)) {
-
-            public void onTick(long millisUntilFinished) {
-                if (!correctAnswer) {
-                    gameOver();
-                } else {
-                    setUpColors();
-                    correctAnswer = false;
-                    disenable(true);
-                }
-            }
-
-            public void onFinish() {
-                timer.start();
-            }
-        };
-
-        /*AdView adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().
-                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
-                addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
-                addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
-                addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
-                build();
-        //AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);*/
+        restoreTimer();
 
         interstitial = new InterstitialAd(this);
         interstitial.setAdUnitId("ca-app-pub-8642726692616831/5265085502");
@@ -103,9 +75,6 @@ public class MainActivity extends Activity {
                 build();
         interstitial.loadAd(adRequest);
 
-        mp = MediaPlayer.create(this, R.raw.sound);
-        mpGO = MediaPlayer.create(this, R.raw.gameover);
-
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise))));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
@@ -114,7 +83,7 @@ public class MainActivity extends Activity {
         }
         findViewById(R.id.rootRelLayout).setBackgroundColor(getResources().getColor(mSharedPreferences.getInt("BG", R.color.green_sea)));
 
-        if(!running) {
+        if (!running) {
             scoreTextView.setTextSize(40);
             scoreTextView.setText(getResources().getString(R.string.start_message));
             disenable(true);
@@ -194,13 +163,13 @@ public class MainActivity extends Activity {
             points = 0;
         }
 
-        if(points >= 5)
+        if (points >= 5)
             displayInterstitial();
 
         running = false;
         scoreTextView.setTextSize(40);
         scoreTextView.setText(getResources().getString(R.string.start_message));
-        disenable(true);
+        disenable(false);
 
         if (prefs.getBoolean("SOUND", true))
             mpGO.start();
@@ -222,20 +191,22 @@ public class MainActivity extends Activity {
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 scoreTextView.setText("");
-                restartEnabled = false;
                 disenable(false);
                 countDownAnimation();
             }
         });
         builder.setNegativeButton(R.string.dismiss, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
+                disenable(true);
             }
         });
         AlertDialog dialog = builder.create();
 
-        try { dialog.show();
-        } catch (Exception e) { Log.i("Exception", "Game Over while the app is in background");}
+        try {
+            dialog.show();
+        } catch (Exception e) {
+            Log.i("Exception", "Game Over while the app is in background");
+        }
     }
 
     public void countDownAnimation() {
@@ -252,7 +223,6 @@ public class MainActivity extends Activity {
                 restoreTimer();
                 timer.start();
                 disenable(true);
-                restartEnabled = true;
                 running = true;
             }
         });
@@ -292,8 +262,7 @@ public class MainActivity extends Activity {
             running = !running;
             scoreTextView.setText("");
             disenable(false);
-        }
-        else {
+        } else {
             if (currentColor == i) {
                 if (prefs.getBoolean("SOUND", true))
                     mp.start();
@@ -314,7 +283,7 @@ public class MainActivity extends Activity {
     }
 
     public void restoreTimer() {
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 800)) { // 800
+        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 1000)) {
 
             public void onTick(long millisUntilFinished) {
                 if (!correctAnswer) {
@@ -359,7 +328,6 @@ public class MainActivity extends Activity {
             tintManager.setStatusBarTintColor(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise)));
         }
         findViewById(R.id.rootRelLayout).setBackgroundColor(getResources().getColor(mSharedPreferences.getInt("BG", R.color.green_sea)));
-
         invalidateOptionsMenu();
     }
 

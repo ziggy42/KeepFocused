@@ -6,14 +6,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +21,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.andreapivetta.keepfocused.R;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class SettingsActivity extends Activity {
 

@@ -5,13 +5,11 @@
     <!-- General -->
     <string name="action_settings">Impostazioni</string>
     <string name="title_activity_settings">Impostazioni</string>
+    <string name="start_message">Clicca su un colore per iniziare!</string>
 
     <!-- Dialogs -->
     <string name="restart">Prova Ancora!</string>
-    <string name="exit">Esci :(</string>
     <string name="game_lost">Hai perso!</string>
-    <string name="welcome_title">Benvenuto!</string>
-    <string name="welcome_text">È bello vederti qui! Gioca! :)</string>
     <string name="start">Inizia!</string>
     <string name="new_game">Ricomincia</string>
     <string name="dismiss">Chiudi</string>
