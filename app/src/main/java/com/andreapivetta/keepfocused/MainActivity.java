@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
     private Random random;
     private CountDownTimer timer;
     private int currentColor;
-    private boolean correctAnswer = true, running = false, last1 = false;
+    private boolean correctAnswer = true, running = false;
     private SharedPreferences mSharedPreferences, prefs;
     private MediaPlayer mp1, mpGO;
     private InterstitialAd interstitial;
@@ -299,8 +299,6 @@ public class MainActivity extends Activity {
 
             public void onTick(long millisUntilFinished) {
                 if(count == 0 || count == Levels.getTicksFromLevel(level)) {
-                    Log.i("TICK", "Situa: nLevels = " + nLevels + " level = " + level);
-
                     if (!correctAnswer) {
                         gameOver();
                     } else {
@@ -375,6 +373,7 @@ public class MainActivity extends Activity {
         builder.setTitle(getResources().getString(R.string.rate_me_title));
         builder.setMessage(getResources().getString(R.string.rate_me_message));
 
+        builder.setCancelable(false);
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
