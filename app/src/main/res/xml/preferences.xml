@@ -7,11 +7,6 @@
         android:key="pref_key_game_settings">
 
         <Preference
-            android:key="pref_key_speed"
-            android:summary="@string/preference_speed"
-            android:title="@string/pref_title_speed" />
-
-        <Preference
             android:key="pref_key_record"
             android:title="@string/pref_title_record" />
 
@@ -24,7 +19,7 @@
             android:key="SOUND"
             android:title="@string/title_sound_preference"
             android:summary="@string/summary_sound_preference"
-            android:defaultValue="true"/>
+            android:defaultValue="false"/>
 
     </PreferenceCategory>
 

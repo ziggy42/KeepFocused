@@ -15,9 +15,7 @@
     <string name="new_game">Restart</string>
     <string name="dismiss">Dismiss</string>
     <string name="record_congrats"> is your new Record! Nice game ;)</string>
-    <string name="set_speed_title">Interval between two colors</string>
     <string name="done">Done</string>
-    <string name="default_current">Default: 1.0s Current: </string>
     <string name="share_app">Share this App!</string>
     <string name="check_out_app" translatable="false">Check out this app!! https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
     <string name="my_record_is" translatable="false">My record is </string>
@@ -26,6 +24,9 @@
     <string name="cancel">Cancel</string>
     <string name="ok" translatable="false">OK</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="rate_me_title">Do you like KeepFocused?</string>
+    <string name="rate_me_message">Rate it on Google Play!</string>
+    <string name="not_now">Maybe Later</string>
 
     <!-- About -->
     <string name="problems_and_suggestions">Contacts:</string>
@@ -44,8 +45,6 @@
     <string name="pref_rate_for_support">Rate</string>
     <string name="pref_share_for_support">Share</string>
     <string name="pref_game">Game</string>
-    <string name="pref_title_speed">Speed</string>
-    <string name="preference_speed">How fast can you tap?</string>
     <string name="pref_title_record" translatable="false">Record</string>
     <string name="pref_share_for_support_summary">Help us to reach more users</string>
     <string name="pref_rate_for_support_summary">Do you like this app?</string>

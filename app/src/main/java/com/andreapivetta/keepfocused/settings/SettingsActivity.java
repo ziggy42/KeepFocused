@@ -124,62 +124,6 @@ public class SettingsActivity extends Activity {
                         }
                     });
 
-            prefKeySpeed
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            final Dialog dialog = new Dialog(getActivity());
-                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
-                            View layout = inflater.inflate(R.layout.dialog, (ViewGroup) getActivity().findViewById(R.id.dialogRootLinearLayout));
-                            dialog.setContentView(layout);
-                            dialog.setTitle(R.string.set_speed_title);
-
-                            Button doneButton = (Button) layout.findViewById(R.id.doneButton);
-                            SeekBar seekBar = (SeekBar) layout.findViewById(R.id.seekBar);
-                            final TextView seekBarTextView = (TextView) layout.findViewById(R.id.seekBarTextView);
-
-                            int interval = mSharedPreferences.getInt(msInterval, 1000);
-                            currentInterval = (interval / 100) - 6;
-                            seekBar.setProgress(currentInterval);
-
-                            seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval / 10.0) + 0.6)) + "s");
-
-                            doneButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    mSharedPreferences.
-                                            edit().
-                                            putInt(msInterval, (currentInterval * 100) + 600)
-                                            .apply();
-                                    dialog.cancel();
-                                }
-                            });
-
-                            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                                @Override
-                                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                                    currentInterval = i;
-                                    seekBarTextView.setText(getActivity().getString(R.string.default_current) + String.format("%.1f", ((currentInterval / 10.0) + 0.6)) + "s");
-                                }
-
-                                @Override
-                                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                                }
-
-                                @Override
-                                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                                }
-                            });
-
-                            dialog.show();
-
-                            return false;
-                        }
-                    });
-
             prefKeyRestore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

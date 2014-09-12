@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -37,11 +38,11 @@ public class MainActivity extends Activity {
     private Random random;
     private CountDownTimer timer;
     private int currentColor;
-    private boolean correctAnswer = true, running = false;
+    private boolean correctAnswer = true, running = false, last1 = false;
     private SharedPreferences mSharedPreferences, prefs;
-    private static String msInterval = "INTERVAL";
-    private MediaPlayer mp, mpGO;
+    private MediaPlayer mp1, mpGO;
     private InterstitialAd interstitial;
+    private int count = 0, level = 1, nLevels = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,22 +59,12 @@ public class MainActivity extends Activity {
         thirdImageView = (ImageView) findViewById(R.id.thirdImageView);
         scoreTextView = (TextView) findViewById(R.id.scoreTextView);
         random = new Random();
-        mp = MediaPlayer.create(this, R.raw.sound);
+        mp1 = MediaPlayer.create(this, R.raw.sound);
         mpGO = MediaPlayer.create(this, R.raw.gameover);
 
         setUpOnClickListener();
         disenable(false);
         restoreTimer();
-
-        interstitial = new InterstitialAd(this);
-        interstitial.setAdUnitId("ca-app-pub-8642726692616831/5265085502");
-        AdRequest adRequest = new AdRequest.Builder().
-                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
-                addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
-                addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
-                addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
-                build();
-        interstitial.loadAd(adRequest);
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(mSharedPreferences.getInt("BGAct", R.color.turquoise))));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -87,6 +78,23 @@ public class MainActivity extends Activity {
             scoreTextView.setTextSize(40);
             scoreTextView.setText(getResources().getString(R.string.start_message));
             disenable(true);
+        }
+
+        interstitial = new InterstitialAd(this);
+        interstitial.setAdUnitId("ca-app-pub-8642726692616831/5265085502");
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(AdRequest.DEVICE_ID_EMULATOR).
+                addTestDevice("EB8CB71D9FE394E0DCCBF26188BED5D7").
+                addTestDevice("A272A918ED2BBA9EC2138C622D7212D0").
+                addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
+                build();
+        interstitial.loadAd(adRequest);
+
+        if(mSharedPreferences.getInt("OPENED", 0) > 20) {
+            askPromo();
+            mSharedPreferences.edit().putInt("OPENED", 0).apply();
+        } else {
+            mSharedPreferences.edit().putInt("OPENED", mSharedPreferences.getInt("OPENED", 0) + 1).apply();
         }
     }
 
@@ -120,7 +128,7 @@ public class MainActivity extends Activity {
     }
 
     private void animateColor(ImageView image) {
-        int duration = mSharedPreferences.getInt(msInterval, 1000) / 2;
+        int duration = (Levels.getTicksFromLevel(Levels.newLevel(level, nLevels)))*50 + 50;
 
         Animation scale = new ScaleAnimation(1, 1.1f, 1, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         Animation scale2 = new ScaleAnimation(1.1f, 1, 1.1f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -264,8 +272,8 @@ public class MainActivity extends Activity {
             disenable(false);
         } else {
             if (currentColor == i) {
-                if (prefs.getBoolean("SOUND", true))
-                    mp.start();
+                if (prefs.getBoolean("SOUND", false))
+                    playSound();
 
                 scoreTextView.setText((Integer.parseInt(scoreTextView.getText().toString()) + 1) + "");
                 correctAnswer = true;
@@ -283,22 +291,39 @@ public class MainActivity extends Activity {
     }
 
     public void restoreTimer() {
-        timer = new CountDownTimer(3606000, mSharedPreferences.getInt(msInterval, 1000)) {
+        count = 0;
+        level = 1;
+        nLevels = 0;
+
+        timer = new CountDownTimer(3606000, 100) {
 
             public void onTick(long millisUntilFinished) {
-                if (!correctAnswer) {
-                    gameOver();
-                } else {
-                    setUpColors();
-                    correctAnswer = false;
-                    disenable(true);
+                if(count == 0 || count == Levels.getTicksFromLevel(level)) {
+                    Log.i("TICK", "Situa: nLevels = " + nLevels + " level = " + level);
+
+                    if (!correctAnswer) {
+                        gameOver();
+                    } else {
+                        setUpColors();
+                        correctAnswer = false;
+                        disenable(true);
+                    }
+
+                    level = Levels.newLevel(level, nLevels);
+                    nLevels ++;
+                    count = 0;
                 }
+                count++;
             }
 
             public void onFinish() {
                 timer.start();
             }
         };
+    }
+
+    private void playSound() {
+        mp1.start();
     }
 
     @Override
@@ -342,5 +367,31 @@ public class MainActivity extends Activity {
                 addTestDevice("C9F505E68A8DADEB86EF831BD769444D").
                 build();
         interstitial.loadAd(adRequest);
+    }
+
+    public void askPromo() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(getResources().getString(R.string.rate_me_title));
+        builder.setMessage(getResources().getString(R.string.rate_me_message));
+
+
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent i = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=com.andreapivetta.keepfocused"));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+        });
+        builder.setNegativeButton(R.string.not_now, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
