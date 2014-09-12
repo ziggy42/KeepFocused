@@ -1,6 +1,7 @@
 package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,11 +17,8 @@ public class AboutActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setStatusBarTintColor(getResources().getColor(R.color.bg_color));
-        }
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(getSharedPreferences("MyPref", 0).getInt("BGAct", R.color.turquoise))));
+        invalidateOptionsMenu();
     }
 
 
@@ -37,5 +35,13 @@ public class AboutActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(getSharedPreferences("MyPref", 0).getInt("BGAct", R.color.turquoise))));
+        invalidateOptionsMenu();
     }
 }
