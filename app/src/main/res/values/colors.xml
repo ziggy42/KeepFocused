@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--
-        <color name="bg_color">#28589C</color>
-        <color name="bg">#00B7EB</color>
-    -->
-
     <color name="american_rose">#FF033E</color>
     <color name="white">#ffff</color>
-    <color name="bg_color">#27ae60</color>
-    <color name="bg">#2ecc71</color>
 
-
-    
     <color name="turquoise">#1abc9c</color>
     <color name="green_sea">#16a085</color>
 

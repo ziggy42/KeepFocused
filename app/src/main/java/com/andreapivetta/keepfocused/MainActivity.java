@@ -1,6 +1,5 @@
 package com.andreapivetta.keepfocused;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,16 +20,19 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andreapivetta.keepfocused.settings.SettingsActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.games.Games;
+import com.google.example.games.basegameutils.BaseGameActivity;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.Random;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseGameActivity {
 
     private ImageButton firstButton, secondButton, thirdButton;
     private ImageView firstImageView, secondImageView, thirdImageView;
@@ -90,7 +92,7 @@ public class MainActivity extends Activity {
                 build();
         interstitial.loadAd(adRequest);
 
-        if(mSharedPreferences.getInt("OPENED", 0) > 20) {
+        if (mSharedPreferences.getInt("OPENED", 0) > 20) {
             askPromo();
             mSharedPreferences.edit().putInt("OPENED", 0).apply();
         } else {
@@ -128,7 +130,7 @@ public class MainActivity extends Activity {
     }
 
     private void animateColor(ImageView image) {
-        int duration = (Levels.getTicksFromLevel(Levels.newLevel(level, nLevels)))*50 + 50;
+        int duration = (Levels.getTicksFromLevel(Levels.newLevel(level, nLevels))) * 50 + 50;
 
         Animation scale = new ScaleAnimation(1, 1.1f, 1, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         Animation scale2 = new ScaleAnimation(1.1f, 1, 1.1f, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -179,7 +181,7 @@ public class MainActivity extends Activity {
         scoreTextView.setText(getResources().getString(R.string.start_message));
         disenable(false);
 
-        if (prefs.getBoolean("SOUND", true))
+        if (prefs.getBoolean("SOUND", false))
             mpGO.start();
 
         timer.cancel();
@@ -190,10 +192,11 @@ public class MainActivity extends Activity {
         builder.setCancelable(false);
 
         if (points > mSharedPreferences.getInt("Record", 0)) {
-            SharedPreferences.Editor e = mSharedPreferences.edit();
-            e.putInt("Record", points);
-            e.apply();
+            mSharedPreferences.edit().putInt("Record", points).apply();
             builder.setMessage("Woah!! " + points + " " + getString(R.string.record_congrats));
+
+            if (mSharedPreferences.getBoolean("LOGGED", false))
+                Games.Leaderboards.submitScore(getApiClient(), getResources().getString(R.string.leaderboard_leaderboard), points);
         }
 
         builder.setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
@@ -215,9 +218,18 @@ public class MainActivity extends Activity {
         } catch (Exception e) {
             Log.i("Exception", "Game Over while the app is in background");
         }
+
+        int playedGames = mSharedPreferences.getInt("PLAYED_GAMES", 0);
+        mSharedPreferences.edit().putInt("PLAYED_GAMES", playedGames + 1);
+
+        if (mSharedPreferences.getBoolean("LOGGED", false)) {
+            if (playedGames + 1 >= 100)
+                Games.Achievements.unlock(getApiClient(), getResources().getString(R.string.achievement_veteran));
+            unlock(points);
+        }
     }
 
-    public void countDownAnimation() {
+    void countDownAnimation() {
         TextView countDownTextView = (TextView) findViewById(R.id.countDownTextView);
         countDownTextView.setVisibility(View.VISIBLE);
         CountDownAnimation countDownAnimation = new CountDownAnimation(countDownTextView, 3);
@@ -264,7 +276,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    public void click(int i) {
+    void click(int i) {
         if (!running) {
             countDownAnimation();
             running = !running;
@@ -290,7 +302,7 @@ public class MainActivity extends Activity {
         thirdButton.setEnabled(enableAll);
     }
 
-    public void restoreTimer() {
+    void restoreTimer() {
         count = 0;
         level = 1;
         nLevels = 0;
@@ -298,7 +310,7 @@ public class MainActivity extends Activity {
         timer = new CountDownTimer(3606000, 100) {
 
             public void onTick(long millisUntilFinished) {
-                if(count == 0 || count == Levels.getTicksFromLevel(level)) {
+                if (count == 0 || count == Levels.getTicksFromLevel(level)) {
                     if (!correctAnswer) {
                         gameOver();
                     } else {
@@ -308,7 +320,7 @@ public class MainActivity extends Activity {
                     }
 
                     level = Levels.newLevel(level, nLevels);
-                    nLevels ++;
+                    nLevels++;
                     count = 0;
                 }
                 count++;
@@ -337,6 +349,14 @@ public class MainActivity extends Activity {
             Intent i = new Intent(this, SettingsActivity.class);
             startActivity(i);
         }
+
+        if (id == R.id.action_leaderboard) {
+            if (mSharedPreferences.getBoolean("LOGGED", false))
+                startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(),
+                        getResources().getString(R.string.leaderboard_leaderboard)), 1);
+            else
+                Toast.makeText(this, "You must be logged in", Toast.LENGTH_LONG).show();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -354,7 +374,7 @@ public class MainActivity extends Activity {
         invalidateOptionsMenu();
     }
 
-    public void displayInterstitial() {
+    void displayInterstitial() {
         if (interstitial.isLoaded())
             interstitial.show();
 
@@ -367,7 +387,7 @@ public class MainActivity extends Activity {
         interstitial.loadAd(adRequest);
     }
 
-    public void askPromo() {
+    void askPromo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(getResources().getString(R.string.rate_me_title));
@@ -386,11 +406,34 @@ public class MainActivity extends Activity {
         });
         builder.setNegativeButton(R.string.not_now, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
+
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onSignInFailed() {
+        mSharedPreferences.edit().putBoolean("LOGGED", false).apply();
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        mSharedPreferences.edit().putBoolean("LOGGED", true).apply();
+    }
+
+    private void unlock(int points) {
+
+        if (points >= 10 && points < 50) {
+            Games.Achievements.unlock(getApiClient(), getResources().getString(R.string.achievement_beginner));
+        } else if (points >= 50 && points < 100){
+            Games.Achievements.unlock(getApiClient(), getResources().getString(R.string.achievement_ninja));
+        } else if(points >= 100 && points < 200) {
+            Games.Achievements.unlock(getApiClient(), getResources().getString(R.string.achievement_legend));
+        } else if(points >= 200) {
+            Games.Achievements.unlock(getApiClient(), getResources().getString(R.string.achievement_god));
+        }
     }
 }

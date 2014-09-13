@@ -11,19 +11,14 @@
     <!-- Dialogs -->
     <string name="restart">Try Again!</string>
     <string name="game_lost">You lose!</string>
-    <string name="start">Start!</string>
-    <string name="new_game">Restart</string>
     <string name="dismiss">Dismiss</string>
     <string name="record_congrats"> is your new Record! Nice game ;)</string>
-    <string name="done">Done</string>
     <string name="share_app">Share this App!</string>
     <string name="check_out_app" translatable="false">Check out this app!! https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
     <string name="my_record_is" translatable="false">My record is </string>
     <string name="can_you_beat_me" translatable="false">, can you beat me? https://play.google.com/store/apps/details?id=com.andreapivetta.keepfocused</string>
     <string name="record_share">Share your record!</string>
-    <string name="cancel">Cancel</string>
     <string name="ok" translatable="false">OK</string>
-    <string name="are_you_sure">Are you sure?</string>
     <string name="rate_me_title">Do you like KeepFocused?</string>
     <string name="rate_me_message">Rate it on Google Play!</string>
     <string name="not_now">Maybe Later</string>
@@ -49,12 +44,14 @@
     <string name="pref_share_for_support_summary">Help us to reach more users</string>
     <string name="pref_rate_for_support_summary">Do you like this app?</string>
     <string name="pref_title_about_app_summary">Who made this</string>
-    <string name="pref_title_restore">Restore Record</string>
-    <string name="pref_title_restore_summary">Current record will be lost</string>
     <string name="title_sound_preference">Sound</string>
     <string name="summary_sound_preference">Enable sound while tapping</string>
     <string name="pref_theme_title">Theme</string>
     <string name="preference_theme">Customize colors</string>
     <string name="chose_theme">Choose a Color!</string>
+
+
+    <string name="options">Options</string>
+    <string name="leaderboard">Leaderboard</string>
 
 </resources>

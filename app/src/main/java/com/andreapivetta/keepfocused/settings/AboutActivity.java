@@ -2,13 +2,11 @@ package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.andreapivetta.keepfocused.R;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 public class AboutActivity extends Activity {
 

@@ -1,9 +1,7 @@
 package com.andreapivetta.keepfocused.settings;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -16,9 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.andreapivetta.keepfocused.R;
 
@@ -123,34 +118,6 @@ public class SettingsActivity extends Activity {
                             return false;
                         }
                     });
-
-            prefKeyRestore.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                    builder.setTitle(R.string.are_you_sure);
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            mSharedPreferences
-                                    .edit()
-                                    .putInt("Record", 0)
-                                    .apply();
-                            prefKeyRecord.setSummary("0");
-                        }
-                    });
-                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-
-                    return false;
-                }
-            });
 
             prefKeyTheme.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override

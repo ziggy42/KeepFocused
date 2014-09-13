@@ -10,18 +10,13 @@
     <!-- Dialogs -->
     <string name="restart">Prova Ancora!</string>
     <string name="game_lost">Hai perso!</string>
-    <string name="start">Inizia!</string>
-    <string name="new_game">Ricomincia</string>
     <string name="dismiss">Chiudi</string>
     <string name="record_congrats"> è il tuo nuovo record! Bella partita ;)</string>
-    <string name="done">Fatto</string>
     <string name="share_app">Condividi questa App!</string>
     <string name="record_share">Condividi il tuo record!</string>
-    <string name="cancel">Annulla</string>
-    <string name="are_you_sure">Sei sicuro?</string>
     <string name="rate_me_title">Ti piace KeepFocused?</string>
     <string name="rate_me_message">Valutalo su Google Play!</string>
-    <string name="not_now">Forse Dopo...</string>
+    <string name="not_now">Forse Dopo…</string>
 
     <!-- About -->
     <string name="problems_and_suggestions">Contatti</string>
@@ -36,12 +31,14 @@
     <string name="pref_share_for_support_summary">Aiutaci a crescere</string>
     <string name="pref_rate_for_support_summary">Ti piace questa app?</string>
     <string name="pref_title_about_app_summary">Autori</string>
-    <string name="pref_title_restore">Ripristina Record</string>
-    <string name="pref_title_restore_summary">Il record attuale sarà eliminato</string>
     <string name="title_sound_preference">Suono</string>
     <string name="summary_sound_preference">Abilita suono</string>
     <string name="pref_theme_title">Tema</string>
     <string name="preference_theme">Personalizza i colori</string>
     <string name="chose_theme">Scegli un colore!</string>
+
+
+    <string name="options">Opzioni</string>
+    <string name="leaderboard">Classifica</string>
 
 </resources>
